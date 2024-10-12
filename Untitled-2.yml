@@ -1,0 +1,11 @@
+echo performance > /sys/devices/system/cpu/cpufreq/policy0/scaling_governor;echo 1 > /sys/devices/system/cpu/cpufreq/boost
+
+ros2 run hobot_codec hobot_codec_republish --ros-args -p in_mode:=ros -p pub_topic:=/hbmem_img -p in_format:=jpeg-compressed -p out_mode:=shared_mem -p out_format:=nv12 -p sub_topic:=/zed_camera_left_sensor/image_raw/compressed -p dump_output:=False
+
+ros2 run line_follower_perception line_follower_perception --ros-args -p model_path:=./resnet18_224x224_nv12.bin -p model_name:=resnet18_224x224_nv12
+
+# 配置USB摄像头
+export CAM_TYPE=usb
+
+# 启动launch文件
+ros2 launch dnn_node_example dnn_node_example.launch.py dnn_example_config_file:=config/yolov5workconfig.json dnn_example_image_width:=480 dnn_example_image_height:=272
